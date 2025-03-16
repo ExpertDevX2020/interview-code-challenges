@@ -46,40 +46,51 @@ namespace OneBeyondApi
 
             var daveSmith = new Borrower
             {
+                Id = Guid.NewGuid(),
                 Name = "Dave Smith",
                 EmailAddress = "dave@smithy.com"
             };
 
             var lianaJames = new Borrower
             {
+                Id = Guid.NewGuid(),
                 Name = "Liana James",
                 EmailAddress = "liana@gmail.com"
             };
 
-            var bookOnLoanUntilToday = new BookStock {
+            var bookOnLoanUntilToday = new BookStock
+            {
+                Id = Guid.NewGuid(),
                 Book = clayBook,
-                OnLoanTo = daveSmith,
+                Borrower = daveSmith,
+                BorrowerId = daveSmith.Id,
                 LoanEndDate = DateTime.Now.Date
             };
 
             var bookNotOnLoan = new BookStock
             {
+                Id = Guid.NewGuid(),
                 Book = clayBook,
-                OnLoanTo = null,
+                Borrower = null,
+                BorrowerId = null,
                 LoanEndDate = null
             };
 
             var bookOnLoanUntilNextWeek = new BookStock
             {
+                Id = Guid.NewGuid(),
                 Book = agileBook,
-                OnLoanTo = lianaJames,
-                LoanEndDate = DateTime.Now.Date.AddDays(7)
+                Borrower = lianaJames,
+                BorrowerId = lianaJames.Id,
+                LoanEndDate = DateTime.Now.Date.AddDays(-7)
             };
 
             var rustBookStock = new BookStock
             {
+                Id = Guid.NewGuid(),
                 Book = rustBook,
-                OnLoanTo = null,
+                Borrower = null,
+                BorrowerId = null,
                 LoanEndDate = null
             };
 
@@ -88,7 +99,6 @@ namespace OneBeyondApi
                 context.Authors.Add(ernestMonkjack);
                 context.Authors.Add(sarahKennedy);
                 context.Authors.Add(margaretJones);
-
 
                 context.Books.Add(clayBook);
                 context.Books.Add(agileBook);
@@ -103,7 +113,6 @@ namespace OneBeyondApi
                 context.Catalogue.Add(rustBookStock);
 
                 context.SaveChanges();
-
             }
         }
     }

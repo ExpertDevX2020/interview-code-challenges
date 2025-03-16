@@ -1,12 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OneBeyondApi.DataAccess;
+using OneBeyondApi.DTOs;
 
 namespace OneBeyondApi.Controllers
 {
-    public class LoanController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class LoanController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly ILogger<BookController> _logger;
+        private readonly IBorrowerRepository _borrowerRepository;
+
+        public LoanController(ILogger<BookController> logger, IBorrowerRepository borrowerRepository)
         {
-            return View();
+            _logger = logger;
+            _borrowerRepository = borrowerRepository;
+        }
+
+        [HttpGet]
+        [Route("GetOnLoan")]
+        public IEnumerable<BorrowerWithLoansDto> GetActiveLoans()
+        {
+            return _borrowerRepository.GetBorrowersWithActiveLoans();
         }
     }
 }

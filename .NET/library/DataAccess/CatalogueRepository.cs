@@ -8,6 +8,7 @@ namespace OneBeyondApi.DataAccess
         public CatalogueRepository()
         {
         }
+
         public List<BookStock> GetCatalogue()
         {
             using (var context = new LibraryContext())
@@ -15,7 +16,7 @@ namespace OneBeyondApi.DataAccess
                 var list = context.Catalogue
                     .Include(x => x.Book)
                     .ThenInclude(x => x.Author)
-                    .Include(x => x.OnLoanTo)
+                    .Include(x => x.Borrower)
                     .ToList();
                 return list;
             }
@@ -28,7 +29,7 @@ namespace OneBeyondApi.DataAccess
                 var list = context.Catalogue
                     .Include(x => x.Book)
                     .ThenInclude(x => x.Author)
-                    .Include(x => x.OnLoanTo)
+                    .Include(x => x.Borrower)
                     .AsQueryable();
 
                 if (search != null)

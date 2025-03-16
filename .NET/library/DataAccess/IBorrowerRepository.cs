@@ -1,4 +1,5 @@
-﻿using OneBeyondApi.Model;
+﻿using OneBeyondApi.DTOs;
+using OneBeyondApi.Model;
 
 namespace OneBeyondApi.DataAccess
 {
@@ -7,5 +8,7 @@ namespace OneBeyondApi.DataAccess
         public List<Borrower> GetBorrowers();
 
         public Guid AddBorrower(Borrower borrower);
+
+        public IEnumerable<BorrowerWithLoansDto> GetBorrowersWithActiveLoans();
     }
 }
