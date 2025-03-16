@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OneBeyondApi.DataAccess;
+using OneBeyondApi.DTOs;
 using OneBeyondApi.Model;
 using System.Collections;
 
@@ -20,7 +22,7 @@ namespace OneBeyondApi.Controllers
 
         [HttpGet]
         [Route("GetBorrowers")]
-        public IList<Borrower> Get()
+        public IList<BorrowerDto> Get()
         {
             return _borrowerRepository.GetBorrowers();
         }
@@ -30,6 +32,26 @@ namespace OneBeyondApi.Controllers
         public Guid Post(Borrower borrower)
         {
             return _borrowerRepository.AddBorrower(borrower);
+        }
+
+        [HttpGet]
+        [Route("Fines")]
+        public List<FineDto> GetBorrowerFines(Guid borrowerId)
+        {
+            using (var context = new LibraryContext())
+            {
+                return context.Fines
+                    .Include(f => f.BookStock)
+                    .ThenInclude(bs => bs.Book)
+                    .Where(f => f.BorrowerId == borrowerId)
+                    .Select(f => new FineDto
+                    {
+                        BookTitle = f.BookStock.Book.Name,
+                        DaysOverdue = f.DaysOverdue,
+                        Amount = f.Amount
+                    })
+                    .ToList();
+            }
         }
     }
 }

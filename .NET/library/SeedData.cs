@@ -9,19 +9,23 @@ namespace OneBeyondApi
         {
             var ernestMonkjack = new Author
             {
+                Id = Guid.NewGuid(),
                 Name = "Ernest Monkjack"
             };
             var sarahKennedy = new Author
             {
+                Id = Guid.NewGuid(),
                 Name = "Sarah Kennedy"
             };
             var margaretJones = new Author
             {
+                Id = Guid.NewGuid(),
                 Name = "Margaret Jones"
             };
 
             var clayBook = new Book
             {
+                Id = Guid.NewGuid(),
                 Name = "The Importance of Clay",
                 Format = BookFormat.Paperback,
                 Author = ernestMonkjack,
@@ -30,6 +34,7 @@ namespace OneBeyondApi
 
             var agileBook = new Book
             {
+                Id = Guid.NewGuid(),
                 Name = "Agile Project Management - A Primer",
                 Format = BookFormat.Hardback,
                 Author = sarahKennedy,
@@ -38,6 +43,7 @@ namespace OneBeyondApi
 
             var rustBook = new Book
             {
+                Id = Guid.NewGuid(),
                 Name = "Rust Development Cookbook",
                 Format = BookFormat.Paperback,
                 Author = margaretJones,
@@ -58,6 +64,13 @@ namespace OneBeyondApi
                 EmailAddress = "liana@gmail.com"
             };
 
+            var franckfotso = new Borrower
+            {
+                Id = Guid.NewGuid(),
+                Name = "Franck Fotso",
+                EmailAddress = "franck@gmail.com"
+            };
+
             var bookOnLoanUntilToday = new BookStock
             {
                 Id = Guid.NewGuid(),
@@ -67,31 +80,22 @@ namespace OneBeyondApi
                 LoanEndDate = DateTime.Now.Date
             };
 
-            var bookNotOnLoan = new BookStock
-            {
-                Id = Guid.NewGuid(),
-                Book = clayBook,
-                Borrower = null,
-                BorrowerId = null,
-                LoanEndDate = null
-            };
-
             var bookOnLoanUntilNextWeek = new BookStock
             {
                 Id = Guid.NewGuid(),
                 Book = agileBook,
                 Borrower = lianaJames,
                 BorrowerId = lianaJames.Id,
-                LoanEndDate = DateTime.Now.Date.AddDays(-7)
+                LoanEndDate = DateTime.Now.Date.AddDays(7)
             };
 
-            var rustBookStock = new BookStock
+            var BookOnLoanwithOneWeekDelay = new BookStock
             {
                 Id = Guid.NewGuid(),
                 Book = rustBook,
-                Borrower = null,
-                BorrowerId = null,
-                LoanEndDate = null
+                Borrower = franckfotso,
+                BorrowerId = franckfotso.Id,
+                LoanEndDate = DateTime.Now.Date.AddDays(-7)
             };
 
             using (var context = new LibraryContext())
@@ -106,11 +110,11 @@ namespace OneBeyondApi
 
                 context.Borrowers.Add(daveSmith);
                 context.Borrowers.Add(lianaJames);
+                context.Borrowers.Add(franckfotso);
 
                 context.Catalogue.Add(bookOnLoanUntilToday);
-                context.Catalogue.Add(bookNotOnLoan);
                 context.Catalogue.Add(bookOnLoanUntilNextWeek);
-                context.Catalogue.Add(rustBookStock);
+                context.Catalogue.Add(BookOnLoanwithOneWeekDelay);
 
                 context.SaveChanges();
             }

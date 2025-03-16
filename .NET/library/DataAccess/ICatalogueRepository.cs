@@ -1,11 +1,12 @@
-﻿using OneBeyondApi.Model;
+﻿using OneBeyondApi.DTOs;
+using OneBeyondApi.Model;
 
 namespace OneBeyondApi.DataAccess
 {
     public interface ICatalogueRepository
     {
-        public List<BookStock> GetCatalogue();
+        public IEnumerable<BookStockDto> GetCatalogue();
 
-        public List<BookStock> SearchCatalogue(CatalogueSearch search);
+        public List<BookStockDto> SearchCatalogue(CatalogueSearch search);
     }
 }

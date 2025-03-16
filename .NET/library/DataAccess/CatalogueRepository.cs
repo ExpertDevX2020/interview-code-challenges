@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OneBeyondApi.DTOs;
 using OneBeyondApi.Model;
 
 namespace OneBeyondApi.DataAccess
@@ -9,24 +10,28 @@ namespace OneBeyondApi.DataAccess
         {
         }
 
-        public List<BookStock> GetCatalogue()
+        public IEnumerable<BookStockDto> GetCatalogue()
         {
             using (var context = new LibraryContext())
             {
-                var list = context.Catalogue
-                    .Include(x => x.Book)
-                    .ThenInclude(x => x.Author)
-                    .Include(x => x.Borrower)
+                return context.Catalogue
+                    .Select(bs => new BookStockDto
+                    {
+                        Id = bs.Id,
+                        Title = bs.Book.Name,
+                        Author = bs.Book.Author.Name,
+                        LoanEndDate = bs.LoanEndDate,
+                        BorrowerName = bs.Borrower.Name
+                    })
                     .ToList();
-                return list;
             }
         }
 
-        public List<BookStock> SearchCatalogue(CatalogueSearch search)
+        public List<BookStockDto> SearchCatalogue(CatalogueSearch search)
         {
             using (var context = new LibraryContext())
             {
-                var list = context.Catalogue
+                var query = context.Catalogue
                     .Include(x => x.Book)
                     .ThenInclude(x => x.Author)
                     .Include(x => x.Borrower)
@@ -34,15 +39,24 @@ namespace OneBeyondApi.DataAccess
 
                 if (search != null)
                 {
-                    if (!string.IsNullOrEmpty(search.Author)) {
-                        list = list.Where(x => x.Book.Author.Name.Contains(search.Author));
+                    if (!string.IsNullOrEmpty(search.Author))
+                    {
+                        query = query.Where(x => x.Book.Author.Name.Contains(search.Author));
                     }
-                    if (!string.IsNullOrEmpty(search.BookName)) {
-                        list = list.Where(x => x.Book.Name.Contains(search.BookName));
+                    if (!string.IsNullOrEmpty(search.BookName))
+                    {
+                        query = query.Where(x => x.Book.Name.Contains(search.BookName));
                     }
                 }
-                    
-                return list.ToList();
+
+                return query.Select(bs => new BookStockDto
+                {
+                    Id = bs.Id,
+                    Title = bs.Book.Name,
+                    Author = bs.Book.Author.Name,
+                    LoanEndDate = bs.LoanEndDate,
+                    BorrowerName = bs.Borrower.Name
+                }).ToList();
             }
         }
     }

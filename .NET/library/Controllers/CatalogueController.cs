@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OneBeyondApi.DataAccess;
+using OneBeyondApi.DTOs;
 using OneBeyondApi.Model;
 using System.Collections;
 
@@ -20,14 +21,14 @@ namespace OneBeyondApi.Controllers
 
         [HttpGet]
         [Route("GetCatalogue")]
-        public IList<BookStock> Get()
+        public IEnumerable<BookStockDto> Get()
         {
             return _catalogueRepository.GetCatalogue();
         }
 
         [HttpPost]
         [Route("SearchCatalogue")]
-        public IList<BookStock> Post(CatalogueSearch search)
+        public IList<BookStockDto> Post(CatalogueSearch search)
         {
             return _catalogueRepository.SearchCatalogue(search);
         }
