@@ -23,21 +23,23 @@ namespace OneBeyondApi.DataAccess
                         Id = b.Id,
                         Name = b.Name,
                         EmailAddress = b.EmailAddress,
-                        BooksOnLoan = b.BookStocks.Select(bs => new BookStockDto
-                        {
-                            Id = bs.Id,
-                            Title = bs.Book.Name,
-                            Author = bs.Book.Author.Name,
-                            LoanEndDate = bs.LoanEndDate,
-                            BorrowerName = b.Name
-                        }).ToList()
+                        BooksOnLoan = b.BookStocks
+                            .Where(bs => bs.LoanEndDate != null)
+                            .Select(bs => new BookStockDto
+                            {
+                                Id = bs.Id,
+                                Title = bs.Book.Name,
+                                Author = bs.Book.Author.Name,
+                                LoanEndDate = bs.LoanEndDate,
+                                BorrowerName = b.Name
+                            })
+                            .ToList()
                     })
                     .ToList();
 
                 return list;
             }
         }
-
 
         public Guid AddBorrower(Borrower borrower)
         {

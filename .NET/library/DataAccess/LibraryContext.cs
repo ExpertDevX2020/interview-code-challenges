@@ -12,13 +12,13 @@ namespace OneBeyondApi.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Borrower>()
                 .HasMany(b => b.BookStocks)
                 .WithOne(bs => bs.Borrower)
                 .HasForeignKey(bs => bs.BorrowerId)
                 .OnDelete(DeleteBehavior.SetNull);
-
-            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Author> Authors { get; set; }
@@ -26,5 +26,6 @@ namespace OneBeyondApi.DataAccess
         public DbSet<BookStock> Catalogue { get; set; }
         public DbSet<Borrower> Borrowers { get; set; }
         public DbSet<Fine> Fines { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
     }
 }

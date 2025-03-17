@@ -1,14 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OneBeyondApi.Helper;
 using OneBeyondApi.Model;
+using OneBeyondApi.DataAccess;
 
 namespace OneBeyondApi.DataAccess
 {
     public class BookRepository : IBookRepository
     {
-        public BookRepository()
+        private readonly IReservationRepository _reservationRepository;
+
+        public BookRepository(IReservationRepository reservationRepository)
         {
+            _reservationRepository = reservationRepository;
         }
+
         public List<Book> GetBooks()
         {
             using (var context = new LibraryContext())
@@ -70,7 +75,12 @@ namespace OneBeyondApi.DataAccess
                     }
                 }
 
+                bookStock.BorrowerId = null;
+                bookStock.LoanEndDate = null;
+
                 context.SaveChanges();
+
+                _reservationRepository.AssignNextReservation(bookStockId);
 
                 return bookStock;
             }

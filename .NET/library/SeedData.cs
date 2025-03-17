@@ -74,6 +74,7 @@ namespace OneBeyondApi
             var bookOnLoanUntilToday = new BookStock
             {
                 Id = Guid.NewGuid(),
+                BookId = clayBook.Id,
                 Book = clayBook,
                 Borrower = daveSmith,
                 BorrowerId = daveSmith.Id,
@@ -83,6 +84,7 @@ namespace OneBeyondApi
             var bookOnLoanUntilNextWeek = new BookStock
             {
                 Id = Guid.NewGuid(),
+                BookId = agileBook.Id,
                 Book = agileBook,
                 Borrower = lianaJames,
                 BorrowerId = lianaJames.Id,
@@ -92,6 +94,7 @@ namespace OneBeyondApi
             var BookOnLoanwithOneWeekDelay = new BookStock
             {
                 Id = Guid.NewGuid(),
+                BookId = rustBook.Id,
                 Book = rustBook,
                 Borrower = franckfotso,
                 BorrowerId = franckfotso.Id,
